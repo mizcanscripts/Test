@@ -1,2 +1,2 @@
-# Test1
-This is only Test
+# Test
+This Repo Is For Test Scripts Only!
