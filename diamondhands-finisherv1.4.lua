@@ -32,6 +32,39 @@
 
 
 repeat task.wait() until game:IsLoaded()
+
+local Players     = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+pcall(function()
+    local game_mt = getrawmetatable(game)
+    if game_mt and rawget(game_mt, "__index") then
+        local old_index = rawget(game_mt, "__index")
+        rawset(game_mt, "__index", newcclosure(function(self, key)
+            if key == "Kick" then
+                return function() end
+            end
+            return old_index(self, key)
+        end))
+    end
+end)
+
+pcall(function()
+    if LocalPlayer and LocalPlayer.Kick then
+        LocalPlayer.Kick = function() end
+    end
+end)
+
+pcall(function()
+    local renv = getrenv()
+    if type(renv) == "table" then
+        for _, name in ipairs({ "LPH_CRASH", "LPH_Report", "LPH_Log", "LPH_Flag", "LPH_Ban" }) do
+            if rawget(renv, name) ~= nil then
+                rawset(renv, name, function() end)
+            end
+        end
+    end
+end)
 if not hookmetamethod then
     warn('[r37q] executor missing hookmetamethod — aborting')
     return
