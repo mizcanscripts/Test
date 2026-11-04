@@ -1,5 +1,5 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.9 -- plain ui library build
+-- NEXUS_UI_LIB_OFFICIAL:v26.10 -- plain ui library build - NEVER obfuscate
 -- / nexus.gg & / mzx.cc
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
@@ -43,6 +43,7 @@ getgenv().library = {
 	notifications = {},
 	instances = {},
 	main_frame = {},
+	main_frames = {},
 	config_holder,
 	current_tab,
 	current_element_open,
@@ -91,6 +92,9 @@ local themes = {
 			["Color"] = {},
 		},
 		["text"] = {
+			["TextColor3"] = {},
+		},
+		["unselected_text"] = {
 			["TextColor3"] = {},
 		},
 		["text_outline"] = {
@@ -595,7 +599,8 @@ function library:window(properties)
 		Size = cfg.size,
 		BackgroundColor3 = Color3.fromRGB(40, 40, 40),
 	})
-	table.insert(library.main_frame, inline1)
+	library.main_frames = library.main_frames or {}
+	table.insert(library.main_frames, inline1)
 	local WINDOW_PATH = inline1
 	library:make_resizable(inline1)
 
@@ -1480,7 +1485,8 @@ function library:window(properties)
 		BackgroundColor3 = Color3.fromRGB(56, 56, 56),
 	})
 	library:make_resizable(playerlist)
-	table.insert(library.main_frame, playerlist)
+	library.main_frames = library.main_frames or {}
+	table.insert(library.main_frames, playerlist)
 	local name = library:create("TextLabel", {
 		Parent = playerlist,
 		Name = "",
@@ -3458,7 +3464,7 @@ end
 
 function library:divider(properties)
 	local cfg = {
-		name = properties.name or nil,
+		name = properties and properties.name or nil,
 		previous_holder = self,
 	}
 
@@ -5831,18 +5837,3 @@ function library:set_background(asset)
 end
 
 return library
---[[
-        -- secondary tabs example (a main tab becomes a two-row tab system):
-
-        local window = library:window({ name = "nexus.gg", size = UDim2.new(0, 580, 0, 480) })
-        local main = window:tab({ name = "main" })
-
-        local aim = main:secondary_tab({ name = "aimbot" })
-        local visual = main:secondary_tab({ name = "visuals" })
-
-        aim:toggle({ name = "enabled", flag = "aim_on", default = false })
-        visual:slider({ name = "size", flag = "size", min = 1, max = 10, default = 5 })
-
-        -- tabs that never call :secondary_tab() keep rendering their sections exactly as before
-        -- (sections and secondary tabs can also be mixed inside the same main tab)
-]]
