@@ -1,5 +1,5 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.9 -- plain ui library build - NEVER obfuscate this file before uploading
+-- NEXUS_UI_LIB_OFFICIAL:v26.9 -- plain ui library build
 -- / nexus.gg & / mzx.cc
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
