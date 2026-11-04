@@ -3020,7 +3020,7 @@ function library:section(properties)
         library:create("UIScale", {
                 Parent = elements,
                 Name = "",
-                Scale = 1.12,
+                Scale = 1,
         })
 
         local UIListLayout = library:create("UIListLayout", {
