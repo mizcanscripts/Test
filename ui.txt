@@ -1,5 +1,5 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.10 -- plain ui library build - NEVER obfuscate
+-- NEXUS_UI_LIB_OFFICIAL:v26.11 -- plain ui library build - NEVER obfuscate this file before uploading
 -- / nexus.gg & / mzx.cc
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
@@ -60,6 +60,8 @@ getgenv().library = {
 	font,
 }
 local library = getgenv().library
+local main_frames = {}
+library.main_frames = main_frames
 local flags = library.flags
 local config_flags = library.config_flags
 local themes = {
@@ -599,8 +601,7 @@ function library:window(properties)
 		Size = cfg.size,
 		BackgroundColor3 = Color3.fromRGB(40, 40, 40),
 	})
-	library.main_frames = library.main_frames or {}
-	table.insert(library.main_frames, inline1)
+	table.insert(main_frames, inline1)
 	local WINDOW_PATH = inline1
 	library:make_resizable(inline1)
 
@@ -1485,8 +1486,7 @@ function library:window(properties)
 		BackgroundColor3 = Color3.fromRGB(56, 56, 56),
 	})
 	library:make_resizable(playerlist)
-	library.main_frames = library.main_frames or {}
-	table.insert(library.main_frames, playerlist)
+	table.insert(main_frames, playerlist)
 	local name = library:create("TextLabel", {
 		Parent = playerlist,
 		Name = "",
@@ -5837,3 +5837,18 @@ function library:set_background(asset)
 end
 
 return library
+--[[
+        -- secondary tabs example (a main tab becomes a two-row tab system):
+
+        local window = library:window({ name = "nexus.gg", size = UDim2.new(0, 580, 0, 480) })
+        local main = window:tab({ name = "main" })
+
+        local aim = main:secondary_tab({ name = "aimbot" })
+        local visual = main:secondary_tab({ name = "visuals" })
+
+        aim:toggle({ name = "enabled", flag = "aim_on", default = false })
+        visual:slider({ name = "size", flag = "size", min = 1, max = 10, default = 5 })
+
+        -- tabs that never call :secondary_tab() keep rendering their sections exactly as before
+        -- (sections and secondary tabs can also be mixed inside the same main tab)
+]]
