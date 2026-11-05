@@ -1,6 +1,6 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.13 -- plain ui library build - NEVER obfuscate
--- / nexus.gg & / mzx.cc.cd
+-- NEXUS_UI_LIB_OFFICIAL:v26.14 -- plain ui library build - NEVER obfuscate this file before uploading
+-- / nexus.gg & / mzx.cc
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
 local ws = game:GetService("Workspace")
@@ -3017,6 +3017,7 @@ function library:section(properties)
                 Size = UDim2.new(1, -24, 0, 0),
                 AutomaticSize = Enum.AutomaticSize.Y,
                 BorderSizePixel = 0,
+                BackgroundTransparency = 1,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
         })
 
