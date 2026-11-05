@@ -1,5 +1,5 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.13 -- plain ui library build - NEVER obfuscate this file before uploading
+-- NEXUS_UI_LIB_OFFICIAL:v26.12 -- plain ui library build - NEVER obfuscate this file before uploading
 -- / nexus.gg & / mzx.cc
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
@@ -215,10 +215,10 @@ function library:unload()
         if library.gui then
                 library.gui:Destroy()
         end
-        for _, connection in library.connections do
+        for _, connection in pairs(library.connections) do
                 connection:Disconnect()
         end
-        for _, item in library.instances do
+        for _, item in pairs(library.instances) do
                 item:Destroy()
         end
         getgenv().library = nil
@@ -427,38 +427,13 @@ function library:create(instance, options)
 
         return ins
 end
-local gui_parent = coregui
-if type(gethui) == "function" then
-        local hui_ok, hui_parent = pcall(gethui)
-        if hui_ok and typeof(hui_parent) == "Instance" then
-                gui_parent = hui_parent
-        end
-end
-if typeof(gui_parent) ~= "Instance" and lp then
-        local player_gui_ok, player_gui = pcall(function()
-                return lp:WaitForChild("PlayerGui", 10)
-        end)
-        if player_gui_ok and typeof(player_gui) == "Instance" then
-                gui_parent = player_gui
-        end
-end
 library.gui = library:create("ScreenGui", {
         Enabled = true,
+        Parent = coregui,
         Name = "",
         DisplayOrder = 2,
-        ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+        ZIndexBehavior = 1,
 })
-local gui_parent_ok = pcall(function()
-        library.gui.Parent = gui_parent
-end)
-if not gui_parent_ok or not library.gui.Parent then
-        local player_gui = lp and lp:FindFirstChildOfClass("PlayerGui")
-        if player_gui then
-                library.gui.Parent = player_gui
-        else
-                error("NEXUS UI: unable to parent ScreenGui to gethui, CoreGui, or PlayerGui")
-        end
-end
 function library:window(properties)
         local cfg = {
                 name = properties.Name or properties.name or properties.Title or properties.title or "sp4m.wtf",
@@ -926,6 +901,16 @@ function library:window(properties)
                 BackgroundColor3 = Color3.fromRGB(38, 38, 38),
         })
 
+        local hrp = library:create("Frame", {
+                Parent = hrp_out,
+                Name = "",
+                Position = UDim2.new(0, 4, 0, 4),
+                BorderColor3 = Color3.fromRGB(0, 0, 0),
+                Size = UDim2.new(1, -8, 1, -8),
+                BorderSizePixel = 0,
+                BackgroundColor3 = Color3.fromRGB(38, 38, 38),
+        })
+
         local glow_patterns = {}
 
         for _, v in next, hitpart:GetChildren() do
@@ -1182,6 +1167,12 @@ function library:window(properties)
                 }),
         })
 
+        local UIStroke = library:create("UIStroke", {
+                Parent = distance,
+                Name = "",
+                LineJoinMode = Enum.LineJoinMode.Miter,
+        })
+
         local weapon = library:create("TextLabel", {
                 Parent = bottom_holder,
                 Name = "",
@@ -1204,6 +1195,12 @@ function library:window(properties)
 
         local UIStroke = library:create("UIStroke", {
                 Parent = weapon,
+                Name = "",
+                LineJoinMode = Enum.LineJoinMode.Miter,
+        })
+
+        local UIStroke = library:create("UIStroke", {
+                Parent = distance,
                 Name = "",
                 LineJoinMode = Enum.LineJoinMode.Miter,
         })
