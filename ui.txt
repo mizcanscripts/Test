@@ -1,6 +1,6 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.12 -- plain ui library build - NEVER obfuscate this file before uploading
--- / nexus.gg & / mzx.cc
+-- NEXUS_UI_LIB_OFFICIAL:v26.13 -- plain ui library build - NEVER obfuscate
+-- / nexus.gg & / mzx.cc.cd
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
 local ws = game:GetService("Workspace")
@@ -2975,7 +2975,8 @@ function library:section(properties)
                 Name = "",
                 Position = UDim2.new(0, 0, 0, 4),
                 BorderColor3 = Color3.fromRGB(19, 19, 19),
-                Size = UDim2.new(1, 0, 1, -4),
+                Size = UDim2.new(1, 0, 0, 0),
+                AutomaticSize = Enum.AutomaticSize.Y,
                 BorderSizePixel = 0,
                 BackgroundColor3 = Color3.fromRGB(8, 8, 8),
         })
@@ -3003,7 +3004,8 @@ function library:section(properties)
                 Name = "",
                 Position = UDim2.new(0, 2, 0, 2),
                 BorderColor3 = Color3.fromRGB(56, 56, 56),
-                Size = UDim2.new(1, -4, 1, -4),
+                Size = UDim2.new(1, -4, 0, 0),
+                AutomaticSize = Enum.AutomaticSize.Y,
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22),
         })
 
@@ -3013,6 +3015,7 @@ function library:section(properties)
                 Position = UDim2.new(0, 12, 0, 12),
                 BorderColor3 = Color3.fromRGB(0, 0, 0),
                 Size = UDim2.new(1, -24, 0, 0),
+                AutomaticSize = Enum.AutomaticSize.Y,
                 BorderSizePixel = 0,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
         })
@@ -3527,7 +3530,7 @@ end
 
 function library:toggle(properties)
         local cfg = {
-                enabled = properties.enabled or nil,
+                enabled = properties.default or properties.enabled or false,
                 name = properties.name or "Toggle",
                 flag = properties.flag or tostring(math.random(1, 9999999)),
                 callback = properties.callback or function() end,
@@ -4093,7 +4096,7 @@ function library:dropdown(properties)
         BackgroundColor3 = Color3.fromRGB(38, 38, 38),
     })
 
-    local options = library:create("Frame", {
+    local options = library:create("ScrollingFrame", {
         Parent = content,
         Name = "",
         BackgroundTransparency = 1,
@@ -4102,6 +4105,10 @@ function library:dropdown(properties)
         Size = UDim2.new(1, -4, 1, -4),
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+        CanvasSize = UDim2.new(0, 0, 0, 0),
+        AutomaticCanvasSize = Enum.AutomaticSize.Y,
+        ScrollBarThickness = 2,
+        ScrollBarImageColor3 = Color3.fromRGB(90, 90, 90),
     })
 
     local UIListLayout = library:create("UIListLayout", {
@@ -4215,6 +4222,8 @@ function library:dropdown(properties)
                 end
             end)
         end
+    local visible_count = math.min(#refreshed_list, 10)
+    options.Size = UDim2.new(1, -4, 0, visible_count * 16 + 8)
     end
 
     function cfg:list(new_list)
