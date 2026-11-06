@@ -1,5 +1,5 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.15 -- plain ui library build - NEVER obfuscate this file before uploading
+-- NEXUS_UI_LIB_OFFICIAL:v26.16 -- plain ui library build - NEVER obfuscate ths file
 -- / nexus.gg & / mzx.cc
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
@@ -4109,6 +4109,7 @@ function library:dropdown(properties)
         BackgroundColor3 = Color3.fromRGB(50, 50, 50),
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.Y,
+        ScrollingDirection = Enum.ScrollingDirection.Y,
         ScrollBarThickness = 3,
         ScrollBarImageColor3 = Color3.fromRGB(120, 120, 120),
     })
@@ -4208,22 +4209,61 @@ function library:dropdown(properties)
 
             table.insert(cfg.option_instances, op)
 
-            op.MouseButton1Down:Connect(function()
-                if cfg.multi then
-                    local selected_index = table.find(cfg.multi_items, op.Text)
-                    if selected_index then
-                        table.remove(cfg.multi_items, selected_index)
-                    else
-                        table.insert(cfg.multi_items, op.Text)
+            op.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    local drag = options.__nex_drag
+                    if drag then
+                        drag.active = true
+                        drag.moved = false
+                        drag.start_y = input.Position.Y
+                        drag.start_canvas = options.CanvasPosition.Y
                     end
-                    cfg.set(cfg.multi_items)
-                else
-                    cfg.set(op.Text)
-                    cfg.set_visible(false)
-                    cfg.open = false
+                end
+            end)
+
+            op.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    local drag = options.__nex_drag
+                    local select_it = drag and drag.active and not drag.moved
+                    if drag then
+                        drag.active = false
+                        drag.moved = false
+                    end
+                    if select_it then
+                        if cfg.multi then
+                            local selected_index = table.find(cfg.multi_items, op.Text)
+                            if selected_index then
+                                table.remove(cfg.multi_items, selected_index)
+                            else
+                                table.insert(cfg.multi_items, op.Text)
+                            end
+                            cfg.set(cfg.multi_items)
+                        else
+                            cfg.set(op.Text)
+                            cfg.set_visible(false)
+                            cfg.open = false
+                        end
+                    end
                 end
             end)
         end
+
+    if not options.__nex_drag then
+        options.__nex_drag = { active = false, moved = false, start_y = 0, start_canvas = 0 }
+        library:connection(uis.InputChanged, function(input)
+            local drag = options.__nex_drag
+            if not drag or not drag.active then
+                return
+            end
+            if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement then
+                local dy = drag.start_y - input.Position.Y
+                if math.abs(dy) > 6 then
+                    drag.moved = true
+                    options.CanvasPosition = Vector2.new(0, math.max(0, drag.start_canvas + dy))
+                end
+            end
+        end)
+    end
     local visible_count = math.min(#refreshed_list, 12)
     options_height = visible_count * 16 + 16
     options.Size = UDim2.new(1, -4, 0, options_height - 8)
