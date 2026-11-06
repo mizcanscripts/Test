@@ -1,5 +1,5 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.16 -- plain ui library build - NEVER obfuscate ths file
+-- NEXUS_UI_LIB_OFFICIAL:v26.17 -- plain ui library build - NEVER obfuscate this file before uploading
 -- / nexus.gg & / mzx.cc
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
@@ -4211,7 +4211,7 @@ function library:dropdown(properties)
 
             op.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    local drag = options.__nex_drag
+                    local drag = cfg.__nex_drag
                     if drag then
                         drag.active = true
                         drag.moved = false
@@ -4223,7 +4223,7 @@ function library:dropdown(properties)
 
             op.InputEnded:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    local drag = options.__nex_drag
+                    local drag = cfg.__nex_drag
                     local select_it = drag and drag.active and not drag.moved
                     if drag then
                         drag.active = false
@@ -4248,10 +4248,10 @@ function library:dropdown(properties)
             end)
         end
 
-    if not options.__nex_drag then
-        options.__nex_drag = { active = false, moved = false, start_y = 0, start_canvas = 0 }
+    if not cfg.__nex_drag then
+        cfg.__nex_drag = { active = false, moved = false, start_y = 0, start_canvas = 0 }
         library:connection(uis.InputChanged, function(input)
-            local drag = options.__nex_drag
+            local drag = cfg.__nex_drag
             if not drag or not drag.active then
                 return
             end
