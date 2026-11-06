@@ -1,5 +1,5 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.14 -- plain ui library build - NEVER obfuscate this file before uploading
+-- NEXUS_UI_LIB_OFFICIAL:v26.15 -- plain ui library build - NEVER obfuscate this file before uploading
 -- / nexus.gg & / mzx.cc
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
@@ -4084,8 +4084,9 @@ function library:dropdown(properties)
         )
     end)
 
+    local options_height = 0
     dropdown_inline:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-        content_inline.Size = UDim2.new(0, dropdown_inline.AbsoluteSize.X, 0, 0)
+        content_inline.Size = UDim2.new(0, dropdown_inline.AbsoluteSize.X, 0, options_height)
     end)
 
     local content = library:create("Frame", {
@@ -4108,8 +4109,8 @@ function library:dropdown(properties)
         BackgroundColor3 = Color3.fromRGB(50, 50, 50),
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.Y,
-        ScrollBarThickness = 2,
-        ScrollBarImageColor3 = Color3.fromRGB(90, 90, 90),
+        ScrollBarThickness = 3,
+        ScrollBarImageColor3 = Color3.fromRGB(120, 120, 120),
     })
 
     local UIListLayout = library:create("UIListLayout", {
@@ -4223,8 +4224,11 @@ function library:dropdown(properties)
                 end
             end)
         end
-    local visible_count = math.min(#refreshed_list, 10)
-    options.Size = UDim2.new(1, -4, 0, visible_count * 16 + 8)
+    local visible_count = math.min(#refreshed_list, 12)
+    options_height = visible_count * 16 + 16
+    options.Size = UDim2.new(1, -4, 0, options_height - 8)
+    content_inline.AutomaticSize = Enum.AutomaticSize.None
+    content_inline.Size = UDim2.new(0, dropdown_inline.AbsoluteSize.X, 0, options_height)
     end
 
     function cfg:list(new_list)
