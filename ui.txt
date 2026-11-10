@@ -4036,6 +4036,7 @@ function library:dropdown(properties)
         TextSize = 12,
         BackgroundColor3 = Color3.fromRGB(38, 38, 38),
         TextTruncate = Enum.TextTruncate.AtEnd,
+        ClipsDescendants = true,
     })
 
     local UIPadding = library:create("UIPadding", {
@@ -4578,6 +4579,7 @@ function library:colorpicker(properties)
                 TextSize = 12,
                 TextTruncate = Enum.TextTruncate.AtEnd,
                 BackgroundColor3 = Color3.fromRGB(38, 38, 38),
+                ClipsDescendants = true,
         })
 
         local alpha_inline = library:create("TextButton", {
@@ -5569,6 +5571,7 @@ function library:textbox(properties)
                 Size = UDim2.new(1, -26, 0, 16),
                 BorderSizePixel = 0,
                 BackgroundColor3 = Color3.fromRGB(8, 8, 8),
+                ClipsDescendants = true,
         })
 
         local textbox = library:create("TextBox", {
@@ -5588,6 +5591,7 @@ function library:textbox(properties)
                 TextSize = 12,
                 BackgroundColor3 = Color3.fromRGB(38, 38, 38),
                 TextTruncate = Enum.TextTruncate.AtEnd,
+                ClipsDescendants = true,
         })
 
         textbox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -5866,18 +5870,3 @@ function library:set_background(asset)
 end
 
 return library
---[[
-        -- secondary tabs example (a main tab becomes a two-row tab system):
-
-        local window = library:window({ name = "nexus.gg", size = UDim2.new(0, 580, 0, 480) })
-        local main = window:tab({ name = "main" })
-
-        local aim = main:secondary_tab({ name = "aimbot" })
-        local visual = main:secondary_tab({ name = "visuals" })
-
-        aim:toggle({ name = "enabled", flag = "aim_on", default = false })
-        visual:slider({ name = "size", flag = "size", min = 1, max = 10, default = 5 })
-
-        -- tabs that never call :secondary_tab() keep rendering their sections exactly as before
-        -- (sections and secondary tabs can also be mixed inside the same main tab)
-]]
