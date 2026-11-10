@@ -1,6 +1,6 @@
 -- @r37q
--- NEXUS_UI_LIB_OFFICIAL:v26.18 -- plain ui library build - NEVER obfuscate this file before uploading
--- / nexus.gg & / mzx.cc
+-- NEXUS_UI_LIB_OFFICIAL:v26.18 -- plain ui library build - NEVER obfuscate ths file
+-- / nexus.gg & / mzx.cc.cd
 local uis = game:GetService("UserInputService")
 local players = game:GetService("Players")
 local ws = game:GetService("Workspace")
@@ -3555,6 +3555,7 @@ function library:toggle(properties)
                 ZIndex = 1,
                 TextSize = 12,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                TextTruncate = Enum.TextTruncate.AtEnd,
         })
 
         local right_components = library:create("Frame", {
@@ -3734,6 +3735,7 @@ function library:slider(properties)
                         TextYAlignment = Enum.TextYAlignment.Top,
                         TextSize = 12,
                         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                        TextTruncate = Enum.TextTruncate.AtEnd,
                 })
 
                 bottom_components = library:create("Frame", {
@@ -4017,6 +4019,7 @@ function library:dropdown(properties)
         Size = UDim2.new(1, -26, 0, 16),
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(8, 8, 8),
+        ClipsDescendants = true,
     })
 
     local dropdown = library:create("TextButton", {
@@ -4032,6 +4035,7 @@ function library:dropdown(properties)
         Position = UDim2.new(0, 2, 0, 2),
         TextSize = 12,
         BackgroundColor3 = Color3.fromRGB(38, 38, 38),
+        TextTruncate = Enum.TextTruncate.AtEnd,
     })
 
     local UIPadding = library:create("UIPadding", {
@@ -4073,6 +4077,7 @@ function library:dropdown(properties)
         Visible = false,
         AutomaticSize = Enum.AutomaticSize.Y,
         BackgroundColor3 = Color3.fromRGB(8, 8, 8),
+        ClipsDescendants = true,
     })
 
     dropdown_inline:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
@@ -4201,6 +4206,7 @@ function library:dropdown(properties)
                 BorderSizePixel = 0,
                 TextSize = 12,
                 BackgroundColor3 = Color3.fromRGB(65, 65, 65),
+                TextTruncate = Enum.TextTruncate.AtEnd,
             })
 
             library:create("UIPadding", {
@@ -4554,6 +4560,7 @@ function library:colorpicker(properties)
                 Size = UDim2.new(1, -26, 0, 16),
                 BorderSizePixel = 0,
                 BackgroundColor3 = Color3.fromRGB(8, 8, 8),
+                ClipsDescendants = true,
         })
 
         local __input = library:create("TextBox", {
@@ -4569,6 +4576,7 @@ function library:colorpicker(properties)
                 Position = UDim2.new(0, 2, 0, 2),
                 PlaceholderText = "r, g, b, a",
                 TextSize = 12,
+                TextTruncate = Enum.TextTruncate.AtEnd,
                 BackgroundColor3 = Color3.fromRGB(38, 38, 38),
         })
 
@@ -5579,6 +5587,7 @@ function library:textbox(properties)
                 PlaceholderText = cfg.placeholder,
                 TextSize = 12,
                 BackgroundColor3 = Color3.fromRGB(38, 38, 38),
+                TextTruncate = Enum.TextTruncate.AtEnd,
         })
 
         textbox:GetPropertyChangedSignal("Text"):Connect(function()
